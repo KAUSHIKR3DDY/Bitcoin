@@ -1,0 +1,50 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import RepeatedKFold
+from sklearn import linear_model
+from sklearn.model_selection import train_test_split
+dataset=pd.read_csv('bitcoin_cash_price.csv')
+dataset.head()
+dataset.drop(dataset.index[[203,204,205,206,207,208,209,210,211,212]],inplace=True)
+#print(dataset.dtypes)
+dataset["Volume"] = dataset["Volume"].str.replace(",","").astype(float)
+#print(dataset.dtypes)
+dataset["Market Cap"] = dataset["Market Cap"].str.replace(",","").astype(float)
+dataset.rename(columns={"Market Cap":"Marketcap"},inplace=True)
+#print(dataset)
+#dataset['Marketcap'] = dataset.Marketcap.astype(float)
+#print(type(dataset['Marketcap']))
+#pd.to_numeric(dataset["Market Cap"], errors='coerce')
+#dataset["Market Cap"]=dataset["Market Cap"].astype('float64',raise_on_error = False)
+#re.sub('[\$,]', '',dataset['Volume'])
+##print(dataset['Marketcap'])
+#x=[1,5,4,2]
+#plt.plot(x)
+#print(dataset['Volume'])
+plt.figure(figsize=(10,10))
+##plt.scatter(dataset['Volume'],dataset['Marketcap'])
+##plt.plot(dataset['Marketcap'])
+#plt.ylabel("volume")
+plt.show()
+#marketcap=[dataset['Market Cap']]
+#print(type(marketcap))
+#date=[dataset['Date']]
+#plt(marketcap)
+#plt.xticks(range(len(date)), date)
+#plt.show()
+array = dataset.values
+X = array[:,1:6]
+Y = array[:,6]
+test_size = 0.3
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_size)
+lm = linear_model.LinearRegression()
+model = lm.fit(X_train, Y_train)
+print('score:', model.score(X_test, Y_test))
+#rkf=RepeatedKFold(n_splits=10, n_repeats=5, random_state=None)
+#for train_index, test_index in rkf.split(X):
+    #X_train, X_test = X[train_index], X[test_index]
+    #y_train, y_test = y[train_index], y[test_index]
+    #model = lm.fit(X_train, y_train)
+    #print('score:', model.score(X_test, y_test))
+
